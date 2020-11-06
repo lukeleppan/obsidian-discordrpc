@@ -1,6 +1,6 @@
 ## Obsidian Discord Rich Presence Plugin
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lukeleppan/obsidian-discordrpc/Build%20Release) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/lukeleppan/obsidian-discordrpc) ![GitHub All Releases](https://img.shields.io/github/downloads/lukeleppan/obsidian-discordrpc/total)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/lukeleppan/obsidian-discordrpc?logo=github&style=for-the-badge) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/lukeleppan/obsidian-discordrpc?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/lukeleppan/obsidian-discordrpc/total?style=for-the-badge)
 
 Update your Discord Status to show your friends what you are working on in Obsidian. With Discord Rich Presence.
 
