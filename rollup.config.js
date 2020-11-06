@@ -21,7 +21,7 @@ export default {
       targets: [
         { src: 'dist/main.js', dest: TEST_VAULT },
         { src: ['manifest.json', 'styles.css'], dest: TEST_VAULT }
-      ], flatten: false
+      ], flatten: true
     })
   ]
 };
