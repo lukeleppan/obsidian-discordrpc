@@ -7,8 +7,7 @@ node_modules
 package-lock.json
 
 # build
-main.js
+dist/
 *.js.map
-
-# obsidian
-data.json
+test-vault/
+*.zip

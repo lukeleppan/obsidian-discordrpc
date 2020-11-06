@@ -1,13 +1,13 @@
 import typescript from '@rollup/plugin-typescript';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import copy from 'rollup-plugin-copy';
+const TEST_VAULT = 'test-vault/.obsidian/plugins/obsidian-discordrpc';
 
 export default {
-  input: [
-    'main.ts',
-  ],
+  input: 'src/main.ts',
   output: {
-    dir: '.',
+    dir: 'dist/',
     sourcemap: 'inline',
     format: 'cjs',
     exports: 'default'
@@ -17,5 +17,11 @@ export default {
     nodeResolve({browser: true,preferBuiltins: false}),
     typescript(),
     commonjs(),
+    copy({
+      targets: [
+        { src: 'dist/main.js', dest: TEST_VAULT },
+        { src: ['manifest.json', 'styles.css'], dest: TEST_VAULT }
+      ], flatten: true
+    })
   ]
 };

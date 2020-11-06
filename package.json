@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@types/discord-rpc": "^3.0.4",
-    "discord-rpc": "^3.1.4"
+    "discord-rpc": "^3.1.4",
+    "rollup-plugin-copy": "^3.3.0"
   }
 }
