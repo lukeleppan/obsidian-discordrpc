@@ -2,6 +2,8 @@
 
 Update your Discord Status to show your friends what you are working on in Obsidian. With Discord Rich Presence.
 
+![Rich Presence Preview](https://raw.githubusercontent.com/lukeleppan/obsidian-discordrpc/master/assets/presence.gif)
+
 ### Usage
 
 After enabling the plugin in settings, your Discord status should show that you are using Obsidian.md.
