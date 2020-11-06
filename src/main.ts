@@ -50,6 +50,8 @@ export default class ObsidianDiscordRPC extends Plugin {
 
   async onunload() {
     await this.saveData(this.settings);
+    this.rpc.clearActivity();
+    this.rpc.destroy();
   }
 
   async connectDiscord(): Promise<void> {
