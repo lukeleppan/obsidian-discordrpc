@@ -84,7 +84,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     }
   }
 
-  public async setActivity(vaultName: string, fileName: string): Promise<void> {
+  async setActivity(vaultName: string, fileName: string): Promise<void> {
     if (this.settings.showVaultName && this.settings.showCurrentFileName) {
       await this.rpc.setActivity({
         details: `Editing ${fileName}`,
