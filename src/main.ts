@@ -31,6 +31,12 @@ export default class ObsidianDiscordRPC extends Plugin {
       this.app.workspace.on("file-open", this.onFileOpen, this)
     );
 
+    this.registerInterval(
+      window.setInterval(async () => {
+        await this.connectDiscord();
+      }, 60 * 1000)
+    );
+
     this.registerDomEvent(statusBarEl, "click", async () => {
       if (this.getState() == PluginState.disconnected) {
         await this.connectDiscord();
@@ -154,17 +160,12 @@ class DiscordRPCSettingsTab extends PluginSettingTab {
 
 class StatusBar {
   private statusBarEl: HTMLElement;
-  private isDisplayingMessage: boolean = false;
 
   constructor(statusBarEl: HTMLElement) {
     this.statusBarEl = statusBarEl;
   }
 
   displayState(state: PluginState) {
-    if (this.isDisplayingMessage) {
-      return;
-    }
-
     switch (state) {
       case PluginState.connected:
         this.displayConnected(2000);
@@ -179,7 +180,6 @@ class StatusBar {
   }
 
   displayConnected(timeout: number) {
-    this.isDisplayingMessage = true;
     this.statusBarEl.setText(`\u{1F30D} Connected to Discord`);
 
     if (timeout && timeout > 0) {
