@@ -1,8 +1,6 @@
-import { Notice, Plugin } from "obsidian";
-import { DiscordRPCSettings } from "./settings/settings";
+import { Notice } from "obsidian";
 
 export class Logger {
-  private settings: DiscordRPCSettings;
 
   log(message: string, showPopups: boolean): void {
     if (showPopups) {

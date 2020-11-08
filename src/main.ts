@@ -1,5 +1,5 @@
 import { Client } from "discord-rpc";
-import { App, Plugin, PluginManifest, TFile } from "obsidian";
+import { Plugin, PluginManifest, TFile } from "obsidian";
 import { Logger } from "./logger";
 import { DiscordRPCSettings, PluginState } from "./settings/settings";
 import { DiscordRPCSettingsTab } from "./settings/settings-tab";
