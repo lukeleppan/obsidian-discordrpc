@@ -21,8 +21,22 @@ You can also reconnect to discord rich presence via the `Reconnect to Discord` c
 
 ### Settings
 
+#### Vault Name Settings
+
 - Toggle whether or not to show **Vault Name**
+- Set a custom **Vault Name** to show publicly
+
+#### File Name Settings
+
 - Toggle whether or not to show **Current File Name**
+- Toggle whether or not to show the current file **extension**
+
+#### Time Settings
+
+- Toggle Whether or not to use the total time you have been using Obsidian, instead of the time spent editing a single file.
+
+#### Notice Settings
+
 - Toggle whether or not to show **Connection Notices**
 
 ### Issues
