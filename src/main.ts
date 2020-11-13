@@ -12,6 +12,7 @@ export default class ObsidianDiscordRPC extends Plugin {
   public rpc: Client;
   public logger: Logger = new Logger();
   public currentFile: TFile;
+  public loadedTime: Date;
 
   setState(state: PluginState) {
     this.state = state;
@@ -30,6 +31,7 @@ export default class ObsidianDiscordRPC extends Plugin {
   }
 
   async onload() {
+    this.loadedTime = new Date();
     let statusBarEl = this.addStatusBarItem();
     this.statusBar = new StatusBar(statusBarEl);
 
@@ -66,6 +68,7 @@ export default class ObsidianDiscordRPC extends Plugin {
   }
 
   async onFileOpen(file: TFile) {
+    this.currentFile = file;
     if (this.getState() == PluginState.connected) {
       await this.setActivity(
         this.app.vault.getName(),
@@ -126,25 +129,33 @@ export default class ObsidianDiscordRPC extends Plugin {
       } else {
         file = fileName;
       }
+
+      let date: Date;
+      if (this.settings.useLoadedTime) {
+        date = this.loadedTime;
+      } else {
+        date = new Date();
+      }
+
       if (this.settings.showVaultName && this.settings.showCurrentFileName) {
         await this.rpc.setActivity({
           details: `Editing ${file}`,
           state: `Vault: ${vault}`,
-          startTimestamp: new Date(),
+          startTimestamp: date,
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
       } else if (this.settings.showVaultName) {
         await this.rpc.setActivity({
           state: `Vault: ${vault}`,
-          startTimestamp: new Date(),
+          startTimestamp: date,
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
       } else if (this.settings.showCurrentFileName) {
         await this.rpc.setActivity({
           details: `Editing ${file}`,
-          startTimestamp: new Date(),
+          startTimestamp: date,
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });

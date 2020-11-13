@@ -29,14 +29,11 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             this.logger.logIgnoreNoNotice("Vault Name is no longer Visable");
           }
 
-          let activeLeaf = this.app.workspace.activeLeaf;
-          let files: TFile[] = this.app.vault.getMarkdownFiles();
-
-          files.forEach((file) => {
-            if (file.basename === activeLeaf.getDisplayText()) {
-              plugin.onFileOpen(file);
-            }
-          });
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension
+          );
         })
       );
 
@@ -50,14 +47,11 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.settings.customVaultName = value;
           plugin.saveData(plugin.settings);
 
-          let activeLeaf = this.app.workspace.activeLeaf;
-          let files: TFile[] = this.app.vault.getMarkdownFiles();
-
-          files.forEach((file) => {
-            if (file.basename === activeLeaf.getDisplayText()) {
-              plugin.onFileOpen(file);
-            }
-          });
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension
+          );
         })
       );
 
@@ -78,14 +72,11 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
               this.logger.logIgnoreNoNotice("File Name is no longer Visable");
             }
 
-            let activeLeaf = this.app.workspace.activeLeaf;
-            let files: TFile[] = this.app.vault.getMarkdownFiles();
-
-            files.forEach((file) => {
-              if (file.basename === activeLeaf.getDisplayText()) {
-                plugin.onFileOpen(file);
-              }
-            });
+            plugin.setActivity(
+              this.app.vault.getName(),
+              plugin.currentFile.basename,
+              plugin.currentFile.extension
+            );
           })
       );
 
@@ -99,16 +90,33 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.settings.showFileExtension = value;
             plugin.saveData(plugin.settings);
 
-            let activeLeaf = this.app.workspace.activeLeaf;
-            let files: TFile[] = this.app.vault.getMarkdownFiles();
-
-            files.forEach((file) => {
-              if (file.basename === activeLeaf.getDisplayText()) {
-                plugin.onFileOpen(file);
-              }
-            });
+            plugin.setActivity(
+              this.app.vault.getName(),
+              plugin.currentFile.basename,
+              plugin.currentFile.extension
+            );
           })
       );
+
+    containerEl.createEl("h3", { text: "Time Settings" });
+    new Setting(containerEl)
+      .setName("Use Obsidian Open Time")
+      .setDesc(
+        "Enable to use the total time you have been using Obsidian, instead of the time spent editing a single file."
+      )
+      .addToggle((boolean) => {
+        boolean.setValue(plugin.settings.useLoadedTime).onChange((value) => {
+          plugin.settings.useLoadedTime = value;
+          plugin.saveData(plugin.settings);
+
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension
+          );
+        });
+      });
+
     containerEl.createEl("h3", { text: "Notice Settings" });
     new Setting(containerEl)
       .setName("Show Notices")
@@ -124,14 +132,11 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             this.logger.logIgnoreNoNotice("Notices Disabled");
           }
 
-          let activeLeaf = this.app.workspace.activeLeaf;
-          let files: TFile[] = this.app.vault.getMarkdownFiles();
-
-          files.forEach((file) => {
-            if (file.basename === activeLeaf.getDisplayText()) {
-              plugin.onFileOpen(file);
-            }
-          });
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension
+          );
         })
       );
   }
