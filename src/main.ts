@@ -69,7 +69,7 @@ export default class ObsidianDiscordRPC extends Plugin {
 
   async onFileOpen(file: TFile) {
     this.currentFile = file;
-    if (this.getState() == PluginState.connected) {
+    if (this.getState() === PluginState.connected) {
       await this.setActivity(
         this.app.vault.getName(),
         file.basename,

@@ -100,7 +100,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
     containerEl.createEl("h3", { text: "Time Settings" });
     new Setting(containerEl)
-      .setName("Use Obsidian Open Time")
+      .setName("Use Obsidian Total Time")
       .setDesc(
         "Enable to use the total time you have been using Obsidian, instead of the time spent editing a single file."
       )
