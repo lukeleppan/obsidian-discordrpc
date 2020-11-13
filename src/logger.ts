@@ -1,6 +1,8 @@
 import { Notice } from "obsidian";
+import ObsidianDiscordRPC from "./main";
 
 export class Logger {
+  plugin: ObsidianDiscordRPC = (this as any).plugin;
 
   log(message: string, showPopups: boolean): void {
     if (showPopups) {
