@@ -11,6 +11,7 @@ export default class ObsidianDiscordRPC extends Plugin {
   public statusBar: StatusBar;
   public rpc: Client;
   public logger: Logger = new Logger();
+  public currentFile: TFile;
 
   setState(state: PluginState) {
     this.state = state;
@@ -53,11 +54,24 @@ export default class ObsidianDiscordRPC extends Plugin {
     });
 
     await this.connectDiscord();
+
+    let activeLeaf = this.app.workspace.activeLeaf;
+    let files: TFile[] = this.app.vault.getMarkdownFiles();
+
+    files.forEach((file) => {
+      if (file.basename === activeLeaf.getDisplayText()) {
+        this.onFileOpen(file);
+      }
+    });
   }
 
   async onFileOpen(file: TFile) {
     if (this.getState() == PluginState.connected) {
-      await this.setActivity(this.app.vault.getName(), file.basename);
+      await this.setActivity(
+        this.app.vault.getName(),
+        file.basename,
+        file.extension
+      );
     }
   }
 
@@ -85,7 +99,7 @@ export default class ObsidianDiscordRPC extends Plugin {
       await this.rpc.login({
         clientId: "763813185022197831",
       });
-      await this.setActivity(this.app.vault.getName(), "...");
+      await this.setActivity(this.app.vault.getName(), "...", "");
     } catch (error) {
       this.setState(PluginState.disconnected);
       this.statusBar.displayState(this.getState());
@@ -93,26 +107,43 @@ export default class ObsidianDiscordRPC extends Plugin {
     }
   }
 
-  async setActivity(vaultName: string, fileName: string): Promise<void> {
-    if (this.getState() == PluginState.connected) {
+  async setActivity(
+    vaultName: string,
+    fileName: string,
+    fileExtension: string
+  ): Promise<void> {
+    if (this.getState() === PluginState.connected) {
+      let vault: string;
+      if (this.settings.customVaultName === "") {
+        vault = vaultName;
+      } else {
+        vault = this.settings.customVaultName;
+      }
+
+      let file: string;
+      if (this.settings.showFileExtension) {
+        file = fileName + "." + fileExtension;
+      } else {
+        file = fileName;
+      }
       if (this.settings.showVaultName && this.settings.showCurrentFileName) {
         await this.rpc.setActivity({
-          details: `Editing ${fileName}`,
-          state: `Vault: ${vaultName}`,
+          details: `Editing ${file}`,
+          state: `Vault: ${vault}`,
           startTimestamp: new Date(),
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
       } else if (this.settings.showVaultName) {
         await this.rpc.setActivity({
-          state: `Vault: ${vaultName}`,
+          state: `Vault: ${vault}`,
           startTimestamp: new Date(),
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
       } else if (this.settings.showCurrentFileName) {
         await this.rpc.setActivity({
-          details: `Editing ${fileName}`,
+          details: `Editing ${file}`,
           startTimestamp: new Date(),
           largeImageKey: "logo",
           largeImageText: "Obsidian",
