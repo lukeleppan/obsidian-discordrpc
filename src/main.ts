@@ -161,7 +161,7 @@ export default class ObsidianDiscordRPC extends Plugin {
         });
       } else {
         await this.rpc.setActivity({
-          startTimestamp: new Date(),
+          startTimestamp: date,
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
