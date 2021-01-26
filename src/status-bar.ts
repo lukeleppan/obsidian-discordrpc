@@ -10,7 +10,7 @@ export class StatusBar {
   displayState(state: PluginState) {
     switch (state) {
       case PluginState.connected:
-        this.displayConnected(2000);
+        this.displayConnected(10000);
         break;
       case PluginState.connecting:
         this.statusBarEl.setText(`Connecting to Discord...`);
@@ -26,7 +26,7 @@ export class StatusBar {
 
     if (timeout && timeout > 0) {
       window.setTimeout(() => {
-        this.statusBarEl.setText(`\u{1F30D}`);
+        this.statusBarEl.setText("");
       }, timeout);
     }
   }
