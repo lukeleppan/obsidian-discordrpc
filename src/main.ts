@@ -44,6 +44,8 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.registerDomEvent(statusBarEl, "click", async () => {
       if (this.getState() == PluginState.disconnected) {
         await this.connectDiscord();
+      } else if (this.getState() == PluginState.connected){
+        await this.disconnectDiscord();
       }
     });
 
@@ -54,6 +56,12 @@ export default class ObsidianDiscordRPC extends Plugin {
       name: "Reconnect to Discord",
       callback: async () => await this.connectDiscord(),
     });
+
+    this.addCommand({
+      id: "disconnect-discord",
+      name: "Disconnect from Discord",
+      callback: async () => await this.disconnectDiscord(),
+    })
 
     await this.connectDiscord();
 
@@ -108,6 +116,14 @@ export default class ObsidianDiscordRPC extends Plugin {
       this.statusBar.displayState(this.getState());
       this.logger.log("Failed to connect to Discord", this.settings.showPopups);
     }
+  }
+
+  async disconnectDiscord(): Promise<void> {
+    this.rpc.clearActivity();
+    this.rpc.destroy();
+    this.setState(PluginState.disconnected);
+    this.statusBar.displayState(this.getState());
+    this.logger.log("Disconnected from Discord", this.settings.showPopups);
   }
 
   async setActivity(
