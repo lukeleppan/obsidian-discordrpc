@@ -117,6 +117,25 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
         });
       });
 
+    containerEl.createEl("h3", { text: "Startup Settings" });
+    new Setting(containerEl)
+      .setName("Automatically Connect to Discord")
+      .setDesc(
+        "Automatically connect to Discord on startup. You can always click the status bar to manually connect."
+      )
+      .addToggle((boolean) => {
+        boolean.setValue(plugin.settings.connectOnStart).onChange((value) => {
+          plugin.settings.connectOnStart = value;
+          plugin.saveData(plugin.settings);
+
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension
+          );
+        });
+      });
+
     containerEl.createEl("h3", { text: "Notice Settings" });
     new Setting(containerEl)
       .setName("Show Notices")

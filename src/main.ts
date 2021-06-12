@@ -63,16 +63,22 @@ export default class ObsidianDiscordRPC extends Plugin {
       callback: async () => await this.disconnectDiscord(),
     })
 
-    await this.connectDiscord();
+    if(this.settings.connectOnStart){
+      await this.connectDiscord();
 
-    let activeLeaf = this.app.workspace.activeLeaf;
-    let files: TFile[] = this.app.vault.getMarkdownFiles();
+      let activeLeaf = this.app.workspace.activeLeaf;
+      let files: TFile[] = this.app.vault.getMarkdownFiles();
 
-    files.forEach((file) => {
-      if (file.basename === activeLeaf.getDisplayText()) {
-        this.onFileOpen(file);
-      }
-    });
+      files.forEach((file) => {
+        if (file.basename === activeLeaf.getDisplayText()) {
+          this.onFileOpen(file);
+        }
+      });
+    } else {
+      this.setState(PluginState.disconnected);
+      this.statusBar.displayState(this.getState());
+    }
+    
   }
 
   async onFileOpen(file: TFile) {
