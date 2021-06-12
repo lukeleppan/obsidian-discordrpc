@@ -31,7 +31,6 @@ export default class ObsidianDiscordRPC extends Plugin {
   }
 
   async onload() {
-    this.loadedTime = new Date();
     let statusBarEl = this.addStatusBarItem();
     this.statusBar = new StatusBar(statusBarEl);
 
@@ -99,6 +98,8 @@ export default class ObsidianDiscordRPC extends Plugin {
   }
 
   async connectDiscord(): Promise<void> {
+    this.loadedTime = new Date();
+    
     this.rpc = new Client({
       transport: "ipc",
     });
