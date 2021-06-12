@@ -75,7 +75,7 @@ export default class ObsidianDiscordRPC extends Plugin {
       });
     } else {
       this.setState(PluginState.disconnected);
-      this.statusBar.displayState(this.getState());
+      this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
     }
     
   }
@@ -105,11 +105,11 @@ export default class ObsidianDiscordRPC extends Plugin {
     });
 
     this.setState(PluginState.connecting);
-    this.statusBar.displayState(this.getState());
+    this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
 
     this.rpc.once("ready", () => {
       this.setState(PluginState.connected);
-      this.statusBar.displayState(this.getState());
+      this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
       this.logger.log("Connected to Discord", this.settings.showPopups);
     });
 
@@ -120,7 +120,7 @@ export default class ObsidianDiscordRPC extends Plugin {
       await this.setActivity(this.app.vault.getName(), "...", "");
     } catch (error) {
       this.setState(PluginState.disconnected);
-      this.statusBar.displayState(this.getState());
+      this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
       this.logger.log("Failed to connect to Discord", this.settings.showPopups);
     }
   }
@@ -129,7 +129,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.rpc.clearActivity();
     this.rpc.destroy();
     this.setState(PluginState.disconnected);
-    this.statusBar.displayState(this.getState());
+    this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
     this.logger.log("Disconnected from Discord", this.settings.showPopups);
   }
 

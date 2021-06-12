@@ -7,10 +7,10 @@ export class StatusBar {
     this.statusBarEl = statusBarEl;
   }
 
-  displayState(state: PluginState) {
+  displayState(state: PluginState, autoHide: boolean) {
     switch (state) {
       case PluginState.connected:
-        this.displayConnected(10000);
+        this.displayConnected(autoHide ? 10000 : 0);
         break;
       case PluginState.connecting:
         this.statusBarEl.setText(`Connecting to Discord...`);
