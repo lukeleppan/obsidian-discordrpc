@@ -5,6 +5,8 @@ export class DiscordRPCSettings {
   customVaultName: string = "";
   showFileExtension: boolean = false;
   useLoadedTime: boolean = false;
+  connectOnStart: boolean = true;
+  autoHideStatusBar: boolean = true;
 }
 
 export enum PluginState {
