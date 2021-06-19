@@ -28,6 +28,10 @@ export class StatusBar {
       window.setTimeout(() => {
         this.statusBarEl.setText("");
       }, timeout);
+    } else {
+      window.setTimeout(() => {
+        this.statusBarEl.setText(`\u{1F30D}`);
+      }, 5000);
     }
   }
 }
