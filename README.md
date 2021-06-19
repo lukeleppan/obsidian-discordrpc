@@ -39,6 +39,13 @@ You can also reconnect to discord rich presence via the `Reconnect to Discord` c
 
 - Toggle whether or not to show **Connection Notices**
 
+### Contributors
+
+#### @leoccyao
+
+- Added the disconnect feature
+- Made the plugin much more user friendly
+
 ### Issues
 
 If you have any issues or suggestions please create an **issue** or a **pull request**.
