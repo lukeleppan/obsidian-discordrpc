@@ -7,6 +7,7 @@ export class DiscordRPCSettings {
   useLoadedTime: boolean = false;
   connectOnStart: boolean = true;
   autoHideStatusBar: boolean = true;
+  exclude: string[] = []
 }
 
 export enum PluginState {
