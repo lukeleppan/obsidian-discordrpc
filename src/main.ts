@@ -118,6 +118,7 @@ export default class ObsidianDiscordRPC extends Plugin {
       });
       await this.setActivity(this.app.vault.getName(), null);
     } catch (error) {
+      console.error(error);
       this.setState(PluginState.disconnected);
       this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
       this.logger.log("Failed to connect to Discord", this.settings.showPopups);
