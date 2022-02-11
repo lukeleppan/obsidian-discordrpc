@@ -146,10 +146,12 @@ export default class ObsidianDiscordRPC extends Plugin {
       }
 
       let fileName: string = "...";
-      if (file && this.settings.showFileExtension) {
-        fileName = file.basename + "." + file.extension;
-      } else {
-        fileName = file.basename;
+      if (file) {
+          if (this.settings.showFileExtension) {
+            fileName = file.basename + "." + file.extension;
+          } else {
+            fileName = file.basename;
+          }
       }
 
       let date: Date;
