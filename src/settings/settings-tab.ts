@@ -1,6 +1,7 @@
-import { PluginSettingTab, Setting, TFile } from "obsidian";
+import { ExtraButtonComponent, PluginSettingTab, Setting, TextComponent, TFile, TFolder } from "obsidian";
 import { Logger } from "src/logger";
 import ObsidianDiscordRPC from "src/main";
+import { FolderSuggestionModal } from "./folder";
 
 export class DiscordRPCSettingsTab extends PluginSettingTab {
   public logger: Logger = new Logger();
@@ -97,6 +98,36 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             );
           })
       );
+
+    let text: TextComponent, extra: ExtraButtonComponent;
+    new Setting(containerEl).setName("Exclude Folders").setDesc("Select folders to exclude from displaying.").addText(t => {
+        text = t;
+        let folders = this.app.vault.getAllLoadedFiles().filter((f) => f instanceof TFolder && plugin.settings.exclude.includes(f.path));
+        const modal = new FolderSuggestionModal(plugin.app, text, (folders as TFolder[]));
+        modal.onClose = () => {
+            if (!text.inputEl.value) {
+                extra.setDisabled(true);
+            } else {
+                extra.setDisabled(false)
+            }
+        }
+    }).addExtraButton(b => {
+        extra = b;
+        b.setIcon("plus-with-circle").onClick(() => {
+            plugin.settings.exclude.push(text.inputEl.value);
+            plugin.saveData(plugin.settings);
+            this.display();
+        })
+    })
+    
+    for (const path of plugin.settings.exclude) {
+        new Setting(containerEl).setName(path).addExtraButton(b => b.setIcon('trash').onClick(() => {
+            plugin.settings.exclude.remove(path);
+            plugin.saveData(plugin.settings);
+            this.display();
+        }))
+    }
+
 
     containerEl.createEl("h3", { text: "Time Settings" });
     new Setting(containerEl)

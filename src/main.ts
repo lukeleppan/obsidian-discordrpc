@@ -1,5 +1,5 @@
 import { Client } from "discord-rpc";
-import { Plugin, PluginManifest, TFile } from "obsidian";
+import { FrontMatterCache, Plugin, PluginManifest, TFile } from "obsidian";
 import { Logger } from "./logger";
 import { DiscordRPCSettings, PluginState } from "./settings/settings";
 import { DiscordRPCSettingsTab } from "./settings/settings-tab";
@@ -85,8 +85,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     if (this.getState() === PluginState.connected) {
       await this.setActivity(
         this.app.vault.getName(),
-        file.basename,
-        file.extension
+        file
       );
     }
   }
@@ -117,7 +116,7 @@ export default class ObsidianDiscordRPC extends Plugin {
       await this.rpc.login({
         clientId: "763813185022197831",
       });
-      await this.setActivity(this.app.vault.getName(), "...", "");
+      await this.setActivity(this.app.vault.getName(), null);
     } catch (error) {
       this.setState(PluginState.disconnected);
       this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
@@ -135,8 +134,7 @@ export default class ObsidianDiscordRPC extends Plugin {
 
   async setActivity(
     vaultName: string,
-    fileName: string,
-    fileExtension: string
+    file: TFile
   ): Promise<void> {
     if (this.getState() === PluginState.connected) {
       let vault: string;
@@ -146,11 +144,11 @@ export default class ObsidianDiscordRPC extends Plugin {
         vault = this.settings.customVaultName;
       }
 
-      let file: string;
-      if (this.settings.showFileExtension) {
-        file = fileName + "." + fileExtension;
+      let fileName: string = "...";
+      if (file && this.settings.showFileExtension) {
+        fileName = file.basename + "." + file.extension;
       } else {
-        file = fileName;
+        fileName = file.basename;
       }
 
       let date: Date;
@@ -160,9 +158,9 @@ export default class ObsidianDiscordRPC extends Plugin {
         date = new Date();
       }
 
-      if (this.settings.showVaultName && this.settings.showCurrentFileName) {
+      if (this.settings.showVaultName && await this.canShowFileName(file)) {
         await this.rpc.setActivity({
-          details: `Editing ${file}`,
+          details: `Editing ${fileName}`,
           state: `Vault: ${vault}`,
           startTimestamp: date,
           largeImageKey: "logo",
@@ -175,9 +173,9 @@ export default class ObsidianDiscordRPC extends Plugin {
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
-      } else if (this.settings.showCurrentFileName) {
+      } else if (await this.canShowFileName(file)) {
         await this.rpc.setActivity({
-          details: `Editing ${file}`,
+          details: `Editing ${fileName}`,
           startTimestamp: date,
           largeImageKey: "logo",
           largeImageText: "Obsidian",
@@ -190,5 +188,15 @@ export default class ObsidianDiscordRPC extends Plugin {
         });
       }
     }
+  }
+  async canShowFileName(file: TFile) {
+    if (this.settings.showCurrentFileName) return false;
+    
+    const frontmatter = await this.app.metadataCache.getFileCache(file)?.frontmatter;
+    if (frontmatter && "discord" in frontmatter) return frontmatter.discord;
+
+    if (this.settings.exclude.some(path => new RegExp(`^${path}`).test(file.path))) return false;
+
+    return true;
   }
 }
