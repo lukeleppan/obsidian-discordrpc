@@ -190,6 +190,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     }
   }
   async canShowFileName(file: TFile) {
+    if (!file) return false;
     if (this.settings.showCurrentFileName) return false;
     
     const frontmatter = await this.app.metadataCache.getFileCache(file)?.frontmatter;
