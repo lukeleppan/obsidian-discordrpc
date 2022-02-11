@@ -36,6 +36,10 @@ export default class ObsidianDiscordRPC extends Plugin {
 
     this.settings = (await this.loadData()) || new DiscordRPCSettings();
 
+    if (!this.settings.exclude) {
+        this.settings.exclude = [];
+    }
+
     this.registerEvent(
       this.app.workspace.on("file-open", this.onFileOpen, this)
     );
