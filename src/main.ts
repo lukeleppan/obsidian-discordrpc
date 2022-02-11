@@ -165,7 +165,9 @@ export default class ObsidianDiscordRPC extends Plugin {
         date = new Date();
       }
 
-      if (this.settings.showVaultName && await this.canShowFileName(file)) {
+      const canShowFileName = await this.canShowFileName(file);
+      console.log("this.settings.showVaultName && canShowFileName", this.settings.showVaultName && canShowFileName);
+      if (this.settings.showVaultName && canShowFileName) {
         await this.rpc.setActivity({
           details: `Editing ${fileName}`,
           state: `Vault: ${vault}`,
@@ -180,7 +182,7 @@ export default class ObsidianDiscordRPC extends Plugin {
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
-      } else if (await this.canShowFileName(file)) {
+      } else if (canShowFileName) {
         await this.rpc.setActivity({
           details: `Editing ${fileName}`,
           startTimestamp: date,
@@ -197,7 +199,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     }
   }
   async canShowFileName(file: TFile) {
-      console.log("🚀 ~ file: main.ts ~ line 197 ~ file", file);
+    console.log("🚀 ~ file: main.ts ~ line 197 ~ file", file);
     if (!file) return false;
     console.log("🚀 ~ file: main.ts ~ line 199 ~ this.settings.showCurrentFileName", this.settings.showCurrentFileName);
     if (!this.settings.showCurrentFileName) return false;
