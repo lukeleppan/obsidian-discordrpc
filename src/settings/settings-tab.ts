@@ -32,8 +32,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
           plugin.setActivity(
             this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile
           );
         })
       );
@@ -50,8 +49,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
           plugin.setActivity(
             this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile
           );
         })
       );
@@ -75,8 +73,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
             plugin.setActivity(
               this.app.vault.getName(),
-              plugin.currentFile.basename,
-              plugin.currentFile.extension
+              plugin.currentFile
             );
           })
       );
@@ -93,8 +90,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
             plugin.setActivity(
               this.app.vault.getName(),
-              plugin.currentFile.basename,
-              plugin.currentFile.extension
+              plugin.currentFile
             );
           })
       );
@@ -102,7 +98,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
     let text: TextComponent, extra: ExtraButtonComponent;
     new Setting(containerEl).setName("Exclude Folders").setDesc("Select folders to exclude from displaying.").addText(t => {
         text = t;
-        let folders = this.app.vault.getAllLoadedFiles().filter((f) => f instanceof TFolder && plugin.settings.exclude.includes(f.path));
+        let folders = this.app.vault.getAllLoadedFiles().filter((f) => f instanceof TFolder && !plugin.settings.exclude.includes(f.path));
         const modal = new FolderSuggestionModal(plugin.app, text, (folders as TFolder[]));
         modal.onClose = () => {
             if (!text.inputEl.value) {
@@ -142,8 +138,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
           plugin.setActivity(
             this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile
           );
         });
       });
@@ -161,8 +156,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
           plugin.setActivity(
             this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile
           );
         });
       });
@@ -180,8 +174,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
           plugin.setActivity(
             this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile
           );
         });
       });
@@ -203,8 +196,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
           plugin.setActivity(
             this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile
           );
         })
       );
