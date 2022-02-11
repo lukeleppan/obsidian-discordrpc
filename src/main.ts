@@ -193,13 +193,17 @@ export default class ObsidianDiscordRPC extends Plugin {
     }
   }
   async canShowFileName(file: TFile) {
+      console.log("🚀 ~ file: main.ts ~ line 197 ~ file", file);
     if (!file) return false;
-    if (this.settings.showCurrentFileName) return false;
+    console.log("🚀 ~ file: main.ts ~ line 199 ~ this.settings.showCurrentFileName", this.settings.showCurrentFileName);
+    if (!this.settings.showCurrentFileName) return false;
     
     const frontmatter = await this.app.metadataCache.getFileCache(file)?.frontmatter;
+    console.log("🚀 ~ file: main.ts ~ line 203 ~ frontmatter && in frontmatter", frontmatter && "discord" in frontmatter);
     if (frontmatter && "discord" in frontmatter) return frontmatter.discord;
 
-    if (this.settings.exclude.some(path => new RegExp(`^${path}`).test(file.path))) return false;
+    console.log("🚀 ~ file: main.ts ~ line 206 ~ this.settings.exclude.some(path => new RegExp(`^${path}`).test(file.path))", this.settings.exclude.some(path => new RegExp(`^${path}`).test(file.path)));
+    if (this.settings.exclude.length && this.settings.exclude.some(path => new RegExp(`^${path}`).test(file.path))) return false;
 
     return true;
   }
