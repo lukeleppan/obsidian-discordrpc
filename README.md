@@ -18,6 +18,7 @@ You can also reconnect to discord rich presence via the `Reconnect to Discord` c
 
 - Updates your Discord Status with Obsidian info, **Vault Name** and/or **Current File Name**.
 - Allows you to customise what info is shown.
+- Current file name can be hidden by adding a folder to exclude in settings or by setting `discord: false` in the file's frontmatter.
 
 ### Settings
 
@@ -30,6 +31,8 @@ You can also reconnect to discord rich presence via the `Reconnect to Discord` c
 
 - Toggle whether or not to show **Current File Name**
 - Toggle whether or not to show the current file **extension**
+- Add folders to be excluded from showing their notes as the **Current File Name**
+  - A file can still be shown if the folder is excluded by setting `discord: true` in the file's frontmatter.
 
 #### Time Settings
 
