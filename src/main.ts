@@ -13,6 +13,7 @@ export default class ObsidianDiscordRPC extends Plugin {
   public logger: Logger = new Logger();
   public currentFile: TFile;
   public loadedTime: Date;
+  public lastSetTime: Date;
 
   setState(state: PluginState) {
     this.state = state;
@@ -42,7 +43,7 @@ export default class ObsidianDiscordRPC extends Plugin {
 
     this.registerInterval(window.setInterval(async () => {
       if (this.getState() == PluginState.connected){
-        this.statusBar.displayTimer(this.loadedTime);
+        this.statusBar.displayTimer(this.settings.useLoadedTime ? this.loadedTime : this.lastSetTime);
       }
     }, 500));
 
@@ -105,7 +106,8 @@ export default class ObsidianDiscordRPC extends Plugin {
 
   async connectDiscord(): Promise<void> {
     this.loadedTime = new Date();
-    
+    this.lastSetTime = new Date();
+
     this.rpc = new Client({
       transport: "ipc",
     });
@@ -165,6 +167,7 @@ export default class ObsidianDiscordRPC extends Plugin {
       } else {
         date = new Date();
       }
+      this.lastSetTime = date;
 
       if (this.settings.showVaultName && this.settings.showCurrentFileName) {
         await this.rpc.setActivity({
