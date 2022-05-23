@@ -42,7 +42,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     );
 
     this.registerInterval(window.setInterval(async () => {
-      if (this.getState() == PluginState.connected){
+      if (this.settings.showConnectionTimer && this.getState() == PluginState.connected){
         this.statusBar.displayTimer(this.settings.useLoadedTime ? this.loadedTime : this.lastSetTime);
       }
     }, 500));

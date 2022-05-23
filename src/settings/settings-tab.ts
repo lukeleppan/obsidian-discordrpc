@@ -135,6 +135,26 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           );
         });
       });
+    
+      new Setting(containerEl)
+      .setName("Show Connected Time")
+      .setDesc(
+        "Show time spent editing file or time connected to Discord in the status bar."
+      )
+      .addToggle((boolean) => {
+        boolean.setValue(plugin.settings.showConnectionTimer).onChange((value) => {
+          plugin.settings.showConnectionTimer = value;
+          plugin.saveData(plugin.settings);
+
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension
+          );
+          // needed to make timer disappear, otherwise it will freeze
+          plugin.statusBar.displayState(plugin.getState(), plugin.settings.autoHideStatusBar);
+        });
+      });
 
     containerEl.createEl("h3", { text: "Startup Settings" });
     new Setting(containerEl)
