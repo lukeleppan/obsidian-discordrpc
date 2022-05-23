@@ -40,6 +40,12 @@ export default class ObsidianDiscordRPC extends Plugin {
       this.app.workspace.on("file-open", this.onFileOpen, this)
     );
 
+    this.registerInterval(window.setInterval(async () => {
+      if (this.getState() == PluginState.connected){
+        this.statusBar.displayTimer(this.loadedTime);
+      }
+    }, 500));
+
     this.registerDomEvent(statusBarEl, "click", async () => {
       if (this.getState() == PluginState.disconnected) {
         await this.connectDiscord();
