@@ -24,9 +24,9 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.saveData(plugin.settings);
 
           if (boolean.getValue()) {
-            this.logger.logIgnoreNoNotice("Vault Name is now Visable");
+            this.logger.logIgnoreNoNotice("Vault Name is now visible");
           } else {
-            this.logger.logIgnoreNoNotice("Vault Name is no longer Visable");
+            this.logger.logIgnoreNoNotice("Vault Name is no longer visible");
           }
 
           plugin.setActivity(
@@ -67,9 +67,9 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.saveData(plugin.settings);
 
             if (boolean.getValue()) {
-              this.logger.logIgnoreNoNotice("File Name is now Visable");
+              this.logger.logIgnoreNoNotice("File Name is now visible");
             } else {
-              this.logger.logIgnoreNoNotice("File Name is no longer Visable");
+              this.logger.logIgnoreNoNotice("File Name is no longer visible");
             }
 
             plugin.setActivity(
