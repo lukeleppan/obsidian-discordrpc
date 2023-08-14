@@ -13,6 +13,7 @@ export default class ObsidianDiscordRPC extends Plugin {
   public logger: Logger = new Logger();
   public currentFile: TFile;
   public loadedTime: Date;
+  public lastSetTime: Date;
 
   setState(state: PluginState) {
     this.state = state;
@@ -39,6 +40,12 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.registerEvent(
       this.app.workspace.on("file-open", this.onFileOpen, this)
     );
+
+    this.registerInterval(window.setInterval(async () => {
+      if (this.settings.showConnectionTimer && this.getState() == PluginState.connected){
+        this.statusBar.displayTimer(this.settings.useLoadedTime ? this.loadedTime : this.lastSetTime);
+      }
+    }, 500));
 
     this.registerDomEvent(statusBarEl, "click", async () => {
       if (this.getState() == PluginState.disconnected) {
@@ -101,6 +108,7 @@ export default class ObsidianDiscordRPC extends Plugin {
 
   async connectDiscord(): Promise<void> {
     this.loadedTime = new Date();
+    this.lastSetTime = new Date();
 
     this.rpc = new Client({
       transport: "ipc",
@@ -173,6 +181,8 @@ export default class ObsidianDiscordRPC extends Plugin {
       } else {
         date = new Date();
       }
+      this.lastSetTime = date;
+
       if (this.settings.privacyMode) {
         await this.rpc.setActivity({
           details: `Editing Notes`,
