@@ -14,6 +14,23 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
 
     containerEl.createEl("h3", { text: "Vault Name Settings" });
     new Setting(containerEl)
+      .setName("Privacy Mode")
+      .setDesc("Enable this to hide the name of the vault and Hide file names")
+      .addToggle((boolean) =>
+        boolean.setValue(plugin.settings.privacyMode).onChange((value) => {
+          plugin.settings.privacyMode = value;
+          plugin.saveData(plugin.settings);
+
+          if (boolean.getValue()) {
+            this.logger.logIgnoreNoNotice("Privacy Mode Enabled");
+          } else {
+            this.logger.logIgnoreNoNotice("Privacy Mode Disabled");
+          }
+
+          plugin.setActivity("", "", "");
+        })
+      );
+    new Setting(containerEl)
       .setName("Show Vault Name")
       .setDesc(
         "Enable this to show the name of the vault you are working with."
@@ -24,9 +41,9 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.saveData(plugin.settings);
 
           if (boolean.getValue()) {
-            this.logger.logIgnoreNoNotice("Vault Name is now Visable");
+            this.logger.logIgnoreNoNotice("Vault Name is now Visible");
           } else {
-            this.logger.logIgnoreNoNotice("Vault Name is no longer Visable");
+            this.logger.logIgnoreNoNotice("Vault Name is no longer Visible");
           }
 
           plugin.setActivity(
@@ -124,16 +141,18 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
         "Automatically hide status bar after successfully connecting to Discord."
       )
       .addToggle((boolean) => {
-        boolean.setValue(plugin.settings.autoHideStatusBar).onChange((value) => {
-          plugin.settings.autoHideStatusBar = value;
-          plugin.saveData(plugin.settings);
+        boolean
+          .setValue(plugin.settings.autoHideStatusBar)
+          .onChange((value) => {
+            plugin.settings.autoHideStatusBar = value;
+            plugin.saveData(plugin.settings);
 
-          plugin.setActivity(
-            this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension
-          );
-        });
+            plugin.setActivity(
+              this.app.vault.getName(),
+              plugin.currentFile.basename,
+              plugin.currentFile.extension
+            );
+          });
       });
     
       new Setting(containerEl)
