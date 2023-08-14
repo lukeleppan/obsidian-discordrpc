@@ -1,6 +1,6 @@
 {
   "name": "obsidian-discordrpc",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Update your Discord Status to show your friends what you are working on in Obsidian. With Discord Rich Presence.",
   "main": "main.js",
   "scripts": {
