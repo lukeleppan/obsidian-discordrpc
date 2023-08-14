@@ -43,7 +43,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.registerDomEvent(statusBarEl, "click", async () => {
       if (this.getState() == PluginState.disconnected) {
         await this.connectDiscord();
-      } else if (this.getState() == PluginState.connected){
+      } else if (this.getState() == PluginState.connected) {
         await this.disconnectDiscord();
       }
     });
@@ -60,9 +60,9 @@ export default class ObsidianDiscordRPC extends Plugin {
       id: "disconnect-discord",
       name: "Disconnect from Discord",
       callback: async () => await this.disconnectDiscord(),
-    })
+    });
 
-    if(this.settings.connectOnStart){
+    if (this.settings.connectOnStart) {
       await this.connectDiscord();
 
       let activeLeaf = this.app.workspace.activeLeaf;
@@ -75,9 +75,11 @@ export default class ObsidianDiscordRPC extends Plugin {
       });
     } else {
       this.setState(PluginState.disconnected);
-      this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
+      this.statusBar.displayState(
+        this.getState(),
+        this.settings.autoHideStatusBar
+      );
     }
-    
   }
 
   async onFileOpen(file: TFile) {
@@ -99,17 +101,23 @@ export default class ObsidianDiscordRPC extends Plugin {
 
   async connectDiscord(): Promise<void> {
     this.loadedTime = new Date();
-    
+
     this.rpc = new Client({
       transport: "ipc",
     });
 
     this.setState(PluginState.connecting);
-    this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
+    this.statusBar.displayState(
+      this.getState(),
+      this.settings.autoHideStatusBar
+    );
 
     this.rpc.once("ready", () => {
       this.setState(PluginState.connected);
-      this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
+      this.statusBar.displayState(
+        this.getState(),
+        this.settings.autoHideStatusBar
+      );
       this.logger.log("Connected to Discord", this.settings.showPopups);
     });
 
@@ -120,7 +128,10 @@ export default class ObsidianDiscordRPC extends Plugin {
       await this.setActivity(this.app.vault.getName(), "...", "");
     } catch (error) {
       this.setState(PluginState.disconnected);
-      this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
+      this.statusBar.displayState(
+        this.getState(),
+        this.settings.autoHideStatusBar
+      );
       this.logger.log("Failed to connect to Discord", this.settings.showPopups);
     }
   }
@@ -129,7 +140,10 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.rpc.clearActivity();
     this.rpc.destroy();
     this.setState(PluginState.disconnected);
-    this.statusBar.displayState(this.getState(), this.settings.autoHideStatusBar);
+    this.statusBar.displayState(
+      this.getState(),
+      this.settings.autoHideStatusBar
+    );
     this.logger.log("Disconnected from Discord", this.settings.showPopups);
   }
 
@@ -159,8 +173,18 @@ export default class ObsidianDiscordRPC extends Plugin {
       } else {
         date = new Date();
       }
-
-      if (this.settings.showVaultName && this.settings.showCurrentFileName) {
+      if (this.settings.privacyMode) {
+        await this.rpc.setActivity({
+          details: `Editing Notes`,
+          state: `Working in a Vault`,
+          startTimestamp: date,
+          largeImageKey: "logo",
+          largeImageText: "Obsidian",
+        });
+      } else if (
+        this.settings.showVaultName &&
+        this.settings.showCurrentFileName
+      ) {
         await this.rpc.setActivity({
           details: `Editing ${file}`,
           state: `Vault: ${vault}`,
